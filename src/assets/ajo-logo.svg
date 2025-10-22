@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" fill="none">
+    <rect width="240" height="80" fill="black" rx="14" stroke="white" />
+    <text x="50%" y="52%"  text-anchor="middle" fill="white"  font-family="Poppins, sans-serif" font-size="40" dy=".35em" letter-spacing="4">
+    AJO</text>
+    <circle cx="210" cy="40" r="6" fill="white" />
+        
+    
+</svg>

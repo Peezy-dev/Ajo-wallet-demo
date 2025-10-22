@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #000000;
+  --panel1: #0b0b0b;
+  --muted: rgba(255, 255, 255, 0.7);
+  --text: #ffffff;
+  --accent: #d6b94d;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.muted {
+  color: var(--muted);
+}
