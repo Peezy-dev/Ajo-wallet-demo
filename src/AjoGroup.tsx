@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../src/Lib/supabaseClient";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface AjoGroup {
   id: string;
@@ -16,12 +17,13 @@ export default function AjoGroupPage() {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [kycVerified, setKycVerified] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+
+  const navigate = useNavigate(); // 👈 initialize navigation
 
   // ✅ Fetch logged-in user
   useEffect(() => {
     const fetchUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
+      const { data } = await supabase.auth.getUser();
       if (data?.user) setUser(data.user);
     };
     fetchUser();
@@ -31,7 +33,7 @@ export default function AjoGroupPage() {
   useEffect(() => {
     const fetchWallet = async () => {
       if (!user) return;
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("wallets")
         .select("kyc_verified")
         .eq("user_id", user.id)
@@ -45,7 +47,7 @@ export default function AjoGroupPage() {
   // ✅ Fetch all Ajo groups
   useEffect(() => {
     const fetchGroups = async () => {
-      const { data, error } = await supabase.from("ajo_groups").select("*");
+      const { data } = await supabase.from("ajo_groups").select("*");
       if (data) setGroups(data);
     };
     fetchGroups();
@@ -94,6 +96,16 @@ export default function AjoGroupPage() {
 
     setKycVerified(newStatus);
     alert(`KYC has been ${newStatus ? "verified ✅" : "unverified ❌"}`);
+  };
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout error:", error);
+      alert("Error logging out");
+      return;
+    }
+    <Navigate to="/Login" />;
   };
 
   return (
@@ -164,7 +176,8 @@ export default function AjoGroupPage() {
             {groups.map((group) => (
               <li
                 key={group.id}
-                className="border p-3 rounded-lg shadow-sm bg-gray-50"
+                onClick={() => navigate(`/group/${group.id}`)} // 👈 redirect on click
+                className="border p-3 rounded-lg shadow-sm bg-gray-50 hover:bg-gray-100 cursor-pointer transition"
               >
                 <p className="font-bold text-gray-800">{group.name}</p>
                 <p className="text-sm text-gray-500">{group.description}</p>
@@ -176,6 +189,13 @@ export default function AjoGroupPage() {
           </ul>
         )}
       </div>
+
+      <button
+        onClick={handleLogout}
+        className="bg-blue-600 text-white p-2 rounded-lg mt-4 w-full"
+      >
+        Logout
+      </button>
     </div>
   );
 }

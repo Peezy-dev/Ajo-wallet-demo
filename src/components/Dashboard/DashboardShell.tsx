@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
+
 import { supabase } from "../../Lib/supabaseClient";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 interface Wallet {
   balance: number;
@@ -26,7 +26,7 @@ export default function DashboardShell() {
   // ✅ Fetch user
   useEffect(() => {
     const getUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
+      const { data } = await supabase.auth.getUser();
       if (data?.user) setUser(data.user);
     };
     getUser();
@@ -144,7 +144,7 @@ export default function DashboardShell() {
       alert("Error logging out");
       return;
     }
-    Navigate("/Login");
+    <Navigate to="/Login" />;
   };
 
   return (

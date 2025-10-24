@@ -1,4 +1,3 @@
-import React from "react";
 import DashboardShell from "../components/Dashboard/DashboardShell";
 const Dashboard = () => {
   return (

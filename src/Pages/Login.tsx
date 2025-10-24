@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "../Lib/supabaseClient";
@@ -8,13 +8,11 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session) {
-          navigate("/dashboard");
-        }
+    const { data: listener } = supabase.auth.onAuthStateChange((session) => {
+      if (session) {
+        navigate("/dashboard");
       }
-    );
+    });
     return () => {
       listener.subscription.unsubscribe();
     };
